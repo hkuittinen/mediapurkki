@@ -1,0 +1,32 @@
+networks:
+    mediapurkki_network:
+        driver: bridge
+
+services:
+    jellyfin:
+        image: jellyfin/jellyfin
+        env_file:
+            - .env
+        networks:
+            - mediapurkki_network
+        expose:
+            - ${JELLYFIN_PORT}
+        volumes:
+            - ./jellyfin/config:/config
+            - ./jellyfin/cache:/cache
+            - type: bind
+              source: ${MEDIA_PATH} 
+              target: /media
+        restart: 'unless-stopped'
+        environment:
+        - JELLYFIN_PublishedServerUrl=http://${HOST}
+    proxy:
+        build: ./proxy
+        env_file:
+            - .env
+        networks:
+            - mediapurkki_network
+        ports:
+            - "80:80"
+        depends_on:
+            - jellyfin
