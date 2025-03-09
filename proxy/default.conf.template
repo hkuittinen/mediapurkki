@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name ${HOST}; 
+    server_name ${HOST};
 
     ## The default `client_max_body_size` is 1M, this might not be enough for some posters, etc.
     client_max_body_size 20M;
@@ -13,7 +13,7 @@ server {
     add_header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), battery=(), bluetooth=(), camera=(), clipboard-read=(), display-capture=(), document-domain=(), encrypted-media=(), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), interest-cohort=(), keyboard-map=(), local-fonts=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=(), serial=(), sync-xhr=(), usb=(), xr-spatial-tracking=()" always;
 
     # Content Security Policy
-    add_header Content-Security-Policy "default-src http: data: blob: ; img-src 'self' http://* ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' http://www.gstatic.com http://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; frame-ancestors 'self'; font-src 'self'";
+    add_header Content-Security-Policy "default-src 'self' data: blob:; img-src 'self' *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self'";
 
     # Proxy main Jellyfin traffic
     location / {
