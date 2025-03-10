@@ -1,12 +1,13 @@
 networks:
     mediapurkki_network:
         driver: bridge
-
 services:
     jellyfin:
         image: jellyfin/jellyfin
         env_file:
             - .env
+        environment:
+            - JELLYFIN_PublishedServerUrl=http://${HOST}
         networks:
             - mediapurkki_network
         expose:
@@ -17,9 +18,7 @@ services:
             - type: bind
               source: ${MEDIA_PATH} 
               target: /media
-        restart: 'unless-stopped'
-        environment:
-        - JELLYFIN_PublishedServerUrl=http://${HOST}
+        restart: always
     proxy:
         build: ./proxy
         env_file:
@@ -30,3 +29,4 @@ services:
             - "80:80"
         depends_on:
             - jellyfin
+        restart: always
